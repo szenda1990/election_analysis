@@ -54,38 +54,41 @@ with open(file_to_load) as election_data:
         # Count votes per candidate.
         candidate_votes[candidate_name] += 1
 
-for candidate in candidate_votes:
-    votes = candidate_votes[candidate]
-    #3. Calculate percentage.
-    vote_percentage = int(votes) / int(total_votes) * 100
-    # 4 Print candidate name and number of votes.
-    print(f"{candidate}: received {vote_percentage}% of the vote.({votes:,})\n")
+    # Using the with statement open the file as a text file
+    with open(file_to_save, "w") as txt_file:
+        elections_results = (
+            f"\n Elections Results\n"
+            f"-------------------------\n"
+            f"Total Votes: {total_votes}\n"
+            f"-------------------------\n")
+        print(elections_results, end="")
+        txt_file.write(elections_results)       
+        for candidate in candidate_votes:
+            votes = candidate_votes[candidate]
+             #3. Calculate percentage.
+            vote_percentage = float(votes) / float(total_votes) * 100
+            candidate_results = (
+                f"{candidate}: {vote_percentage:.1f}% ({votes:,})\n")
+            # 4 Print candidate name and number of votes.
+            print(candidate_results)
+            txt_file.write(candidate_results)
 
     # Determine winning vote count and candidate.
     # Determine if the votes are greater than the winning count.
-    if (votes > winning_count) and (vote_percentage > winning_percentage):
-        # If true then set winning_count = votes and winning_percent = vote_percentage
-        winning_count = votes
-        winning_percentage = vote_percentage
-        # Set the winning_candidate equal to the candidate's name.
-        winning_candidate = candidate
+        if (votes > winning_count) and (vote_percentage > winning_percentage):
+            # If true then set winning_count = votes and winning_percent = vote_percentage
+            winning_count = votes
+            winning_percentage = vote_percentage
+            # Set the winning_candidate equal to the candidate's name.
+            winning_candidate = candidate
 
-winning_candidate_summary = (
-    f"-------------------------\n"
-    f"Winner: {winning_candidate}\n"
-    f"Winning Vote Count: {winning_count:,}\n"
-    f"Winning Percentage: {winning_percentage:.1f}%\n"
-    f"-------------------------\n")
-
-print(winning_candidate_summary) 
-
-
-
-
-
-# Using the with statement open the file as a text file
-with open(file_to_save, "w") as txt_file:
-
-    # Write some data to the file.
-    txt_file.write("Hello World.\n\nCounties in the Election\n-------------------------\nArapahoe\nDenver\nJefferson")
-
+            winning_candidate_summary = (
+                f"-------------------------\n"
+                f"Winner: {winning_candidate}\n"
+                f"Winning Vote Count: {winning_count:,}\n"
+                f"Winning Percentage: {winning_percentage:.1f}%\n"
+                f"-------------------------\n")
+            print(winning_candidate_summary) 
+            txt_file.write(winning_candidate_summary)
+# Write some data to the file.
+    #txt_file.write("Hello World.\n\nCounties in the Election\n-------------------------\nArapahoe\nDenver\nJefferson")
